@@ -10,6 +10,14 @@ const providerConfig = {
       newUrl = newUrl.replace(/cur=\w+/gi, `cur=${currency}`);
       return newUrl;
     }
+  },
+  playngo: {
+    name: 'Play\'n GO',
+    transformUrl: (baseUrl, geo, currency) => {
+      const langFormat = geo.replace('-', '_');
+      const newUrl = baseUrl.replace(/lang=\w+_\w+/gi, `lang=${langFormat}`);
+      return newUrl;
+    }
   }
 };
 
@@ -19,7 +27,7 @@ const currencies = {
   'ro-RO': 'RON',
   'el-GR': 'EUR',
   'en-AU': 'AUD',
-  'cs-CS': 'CZK'
+  'cs-CZ': 'CZK'
 };
 
 const availableGeo = [
@@ -28,11 +36,12 @@ const availableGeo = [
   { code: 'ro-RO', label: 'Romania (ro-RO)', currency: 'RON' },
   { code: 'el-GR', label: 'Greece (el-GR)', currency: 'EUR' },
   { code: 'en-AU', label: 'Australia (en-AU)', currency: 'AUD' },
-  { code: 'cs-CS', label: 'Czech Republic (cs-CS)', currency: 'CZK' }
+  { code: 'cs-CZ', label: 'Czech Republic (cs-CS)', currency: 'CZK' }
 ];
 
 const availableProviders = [
-  { id: 'pragmatic', label: '🎮 Pragmatic Play' }
+  { id: 'pragmatic', label: '🎮 Pragmatic Play' },
+  { id: 'playngo', label: '🎰 Play\'n GO' }
 ];
 
 function App() {
