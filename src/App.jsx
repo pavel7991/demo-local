@@ -18,6 +18,15 @@ const providerConfig = {
       const newUrl = baseUrl.replace(/lang=\w+_\w+/gi, `lang=${langFormat}`);
       return newUrl;
     }
+  },
+  hacksawgaming: {
+    name: 'Hacksaw Gaming',
+    transformUrl: (baseUrl, geo, currency) => {
+      const lang = geo.split('-')[0];
+      let newUrl = baseUrl.replace(/language=\w+/gi, `language=${lang}`);
+      newUrl = newUrl.replace(/currency=\w+/gi, `currency=${currency}`);
+      return newUrl;
+    }
   }
 };
 
@@ -41,7 +50,8 @@ const availableGeo = [
 
 const availableProviders = [
   { id: 'pragmatic', label: '🎮 Pragmatic Play' },
-  { id: 'playngo', label: '🎰 Play\'n GO' }
+  { id: 'playngo', label: '🎰 Play\'n GO' },
+  { id: 'hacksawgaming', label: '🪚 Hacksaw Gaming' }
 ];
 
 function App() {
