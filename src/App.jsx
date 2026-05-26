@@ -4,6 +4,7 @@ import './App.css';
 const providerConfig = {
   pragmatic: {
     name: 'Pragmatic Play',
+    keyword: 'pragmatic',
     transformUrl: (baseUrl, geo, currency) => {
       const lang = geo.split('-')[0];
       let newUrl = baseUrl.replace(/lang=\w+/gi, `lang=${lang}`);
@@ -13,6 +14,7 @@ const providerConfig = {
   },
   playngo: {
     name: 'Play\'n GO',
+    keyword: 'playngo',
     transformUrl: (baseUrl, geo, currency) => {
       const langFormat = geo.replace('-', '_');
       const newUrl = baseUrl.replace(/lang=\w+_\w+/gi, `lang=${langFormat}`);
@@ -21,6 +23,7 @@ const providerConfig = {
   },
   hacksawgaming: {
     name: 'Hacksaw Gaming',
+    keyword: 'hacksaw',
     transformUrl: (baseUrl, geo, currency) => {
       const lang = geo.split('-')[0];
       let newUrl = baseUrl.replace(/language=\w+/gi, `language=${lang}`);
@@ -45,7 +48,7 @@ const availableGeo = [
   { code: 'ro-RO', label: 'Romania (ro-RO)', currency: 'RON' },
   { code: 'el-GR', label: 'Greece (el-GR)', currency: 'EUR' },
   { code: 'en-AU', label: 'Australia (en-AU)', currency: 'AUD' },
-  { code: 'cs-CZ', label: 'Czech Republic (cs-CS)', currency: 'CZK' }
+  { code: 'cs-CZ', label: 'Czech Republic (cs-CZ)', currency: 'CZK' }
 ];
 
 const availableProviders = [
@@ -78,6 +81,31 @@ function App() {
     }
   };
 
+  // Функция для проверки соответствия URL выбранному провайдеру
+  const validateProviderUrl = (url, providerId) => {
+    if (!url || !url.trim()) {
+      return { valid: false, message: 'URL не может быть пустым' };
+    }
+
+    const provider = providerConfig[providerId];
+    if (!provider) {
+      return { valid: false, message: 'Провайдер не найден' };
+    }
+
+    const keyword = provider.keyword;
+    const urlLower = url.toLowerCase();
+
+    // Проверяем наличие ключевого слова в URL
+    if (!urlLower.includes(keyword.toLowerCase())) {
+      return {
+        valid: false,
+        message: `URL не соответствует выбранному провайдеру "${provider.name}"`
+      };
+    }
+
+    return { valid: true, message: '' };
+  };
+
   const handleTransform = async () => {
     if (!inputUrl.trim()) {
       showNotification('Пожалуйста, введите URL', 'error');
@@ -87,6 +115,13 @@ function App() {
     const provider = providerConfig[selectedProvider];
     if (!provider) {
       showNotification('Выбранный провайдер не найден', 'error');
+      return;
+    }
+
+    // Валидация URL на соответствие провайдеру
+    const validation = validateProviderUrl(inputUrl, selectedProvider);
+    if (!validation.valid) {
+      showNotification(validation.message, 'error');
       return;
     }
 
