@@ -30,6 +30,24 @@ const providerConfig = {
       newUrl = newUrl.replace(/currency=\w+/gi, `currency=${currency}`);
       return newUrl;
     }
+  },
+  contentmedia: {
+    name: 'Elk-Studios (Content Media)',
+    keyword: 'contentmedia',
+    transformUrl: (baseUrl, geo, currency) => {
+      // Преобразуем geo в формат language (en_gb, nl_nl и т.д.)
+      const languageFormat = geo.toLowerCase().replace('-', '_');
+
+      let newUrl = baseUrl;
+
+      // Заменяем параметр currency
+      newUrl = newUrl.replace(/currency=\w+/gi, `currency=${currency}`);
+
+      // Заменяем параметр language (ожидается формат en_gb, nl_nl и т.д.)
+      newUrl = newUrl.replace(/language=\w+_\w+/gi, `language=${languageFormat}`);
+
+      return newUrl;
+    }
   }
 };
 
@@ -54,7 +72,8 @@ const availableGeo = [
 const availableProviders = [
   { id: 'pragmatic', label: '🎮 Pragmatic Play' },
   { id: 'playngo', label: '🎰 Play\'n GO' },
-  { id: 'hacksawgaming', label: '🪚 Hacksaw Gaming' }
+  { id: 'hacksawgaming', label: '🪚 Hacksaw Gaming' },
+  { id: 'contentmedia', label: '🎄 Elk-Studios (Content Media)' } // 👈 ДОБАВЛЯЕМ В СПИСОК
 ];
 
 function App() {
@@ -232,3 +251,5 @@ function App() {
 }
 
 export default App;
+
+
